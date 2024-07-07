@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <title>Afghan Link</title>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Welcome to Afghan Link</h1>
+        <div class="login-btn">
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <nav class="navigation">
+            <ul>
+                <li class="profile-section">
+                    <a href="#">Profile</a>
+<ul class="profile-submenu">
+                    <li>
+                        <form action="/change-username" method="POST">
+                            <button type="submit">Change Username</button>
+                            <input type="password" name="password" placeholder="Enter your password" required>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="/change-password" method="POST">
+                            <button type="submit">Change Password</button>
+                            <input type="password" name="current_password" placeholder="Current password" required>
+                            <input type="password" name="new_password" placeholder="New password" required>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="/delete-profile" method="POST">
+                            <button type="submit">Delete Profile</button>
+                            <input type="password" name="password" placeholder="Enter your password" required>
+                        </form>
+                    </li>
+                </ul>
+                </li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/events">Events</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/chat">Chat</a></li>
+                <li><a href="/membership">Membership</a></li>
+                <li><a href="/privacy">Privacy Policy</a></li>
+                <li><a href="/terms">Terms of Use</a></li>
+
+            </ul>
+        </nav>
+    </div>
+    
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Main content will be dynamically loaded here -->
+    </div>
+</body>
+</html>
