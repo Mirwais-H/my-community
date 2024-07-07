@@ -1,35 +1,17 @@
-from flask import Flask, render_template, redirect, request, flash, url_for, session
-from werkzeug.security import generate_password_hash, check_password_hash
-from pymongo import MongoClient, DESCENDING
-from bson import ObjectId
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, redirect, url_for, request, session, flash
+from flask_bcrypt import Bcrypt
+from pymongo import MongoClient
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this to a secure secret key
+app.secret_key = os.urandom(24)
+bcrypt = Bcrypt(app)
 
-# Dummy user data for demonstration
-dummy_user = {
-    'username': 'JohnDoe',
-    'password': 'password123'  # Hashed password should be used in a real application
-}
-
-# Connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
-db = client['Afghan-Community']  # Replace with your database name
-users = db['users']
-events = db['events']
-
-
-# Routes
-@app.route('/profile')
-def profile():
-    username = 'JohnDoe'  # Replace with actual username or retrieve from session
-    return render_template('profile.html', username=username)
+client = MongoClient('localhost', 27017)
+db = client['Afghan-Community']
 
 @app.route('/')
-def index():
+def home():
     return render_template('index.html')
 
 @app.route('/about')
@@ -37,13 +19,11 @@ def about():
     return render_template('about.html')
 
 @app.route('/events')
-def event_list():
-    event_list = list(events.find().sort('_id', DESCENDING))
-    return render_template('events.html', events=event_list)
+def events():
+    return render_template('events.html')
 
 @app.route('/blog')
 def blog():
-    # Replace with logic to fetch and display blog posts
     return render_template('blog.html')
 
 @app.route('/contact')
@@ -56,7 +36,6 @@ def chat():
 
 @app.route('/membership')
 def membership():
-    # Replace with logic to display membership details
     return render_template('membership.html')
 
 @app.route('/privacy')
@@ -67,11 +46,28 @@ def privacy():
 def terms():
     return render_template('terms.html')
 
-# Route to change profile photo
-@app.route('/change-photo')
-def change_photo():
-    # Logic to handle changing profile photo
-    return render_template('change_photo.html')
+@app.route('/profile')
+def profile():
+    if 'username' in session:
+        return render_template('profile.html')
+    else:
+        flash("Please log in to access your profile.")
+        return redirect(url_for('login'))
+
+@app.route('/change-username', methods=['POST'])
+def change_username():
+    # Implement the logic to change the username
+    return redirect(url_for('profile'))
+
+@app.route('/change-password', methods=['POST'])
+def change_password():
+    # Implement the logic to change the password
+    return redirect(url_for('profile'))
+
+@app.route('/delete-profile', methods=['POST'])
+def delete_profile():
+    # Implement the logic to delete the profile
+    return redirect(url_for('profile'))
 
 # Route to change username
 @app.route('/change-username', methods=['GET', 'POST'])
